@@ -1,4 +1,18 @@
 {
-  "workflow_id":"WF-001","state":"INIT","iteration":0,
-  "max_fix_iterations":3,"max_format_retries":2,"max_tool_failures":3,"max_agent_turns":20
+  "workflow_id": "WF-001",
+  "state": "INIT",
+  "previous_state": null,
+  "iteration": 0,
+  "fix_iteration": 0,
+  "active_task_id": null,
+  "last_agent": null,
+  "last_status": null,
+  "validation_result": null,
+  "pending_defects": [],
+  "human_approved": false,
+  "human_decision": null,
+  "max_fix_iterations": 3,
+  "max_format_retries": 2,
+  "max_tool_failures": 3,
+  "max_agent_turns": 20
 }
