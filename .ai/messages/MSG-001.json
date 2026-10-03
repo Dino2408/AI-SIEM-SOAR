@@ -1,0 +1,5 @@
+{
+  "message_id":"MSG-001","type":"TASK_ASSIGNMENT","task_id":"TASK-001","agent":"architect",
+  "objective":"Define initial architecture and development plan",
+  "input_artifacts":[".ai/project/requirements.md"],"constraints":{"human_final_acceptance":true}
+}
