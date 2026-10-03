@@ -1,0 +1,31 @@
+version: "2.1"
+architecture_type: integrated_open_source_siem_soar_with_ai
+deployment:
+  packaging: docker
+  orchestration: docker_compose
+  host_target: ubuntu_server
+layers:
+  telemetry: [Wazuh Agent, Suricata]
+  siem: Wazuh
+  analysis: [Custom AI Analysis Module, Ollama]
+  soar: Shuffle
+  optional_ti: [MISP, OpenCTI]
+integration:
+  suricata_to_wazuh: "shared EVE JSON volume + Wazuh JSON localfile"
+  wazuh_to_ai: "Wazuh custom Integrator webhook"
+  ai_to_shuffle: "allowlisted Shuffle webhook"
+ai_module:
+  input: [Wazuh alert JSON, related Wazuh events, asset context]
+  output: [incident_summary, severity_assessment, evidence, attack_hypothesis, recommended_playbook, response_arguments, confidence]
+  execution: [validate_output, check_policy, human_approval_for_high_impact, call_shuffle]
+  prohibited: [arbitrary_shell, arbitrary_network_targets, destructive_actions, policy_bypass, fabricated_evidence]
+success_criteria:
+  - docker_stack_starts
+  - wazuh_receives_security_events
+  - suricata_events_reach_wazuh
+  - ai_analyzes_real_alert
+  - ai_output_is_structured
+  - approved_shuffle_playbook_is_selected
+  - safe_lab_response_is_executed
+  - high_impact_action_requires_human_approval
+  - detection_analysis_response_are_audited

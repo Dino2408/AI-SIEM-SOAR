@@ -1,5 +1,5 @@
 id: validator
-role: soc_manager_validator
+role: soc_manager_integration_validator
 model_preference: reasoning
 system_prompt: agents/validator/system.md
 input:
@@ -9,5 +9,5 @@ output_contract: .ai/contracts/agent_result.schema.json
 permissions:
   read: [project, contracts, tasks, testing, evidence, reports, artifacts, src, tests, docker]
   write: [.ai/validation]
-  tools: [filesystem.read, filesystem.list, testing.run, siem.health, siem.events]
-forbidden: [modify_product_code, docker, fabricate_evidence, git_commit, merge_main, approve_production_safety_action]
+  tools: [filesystem.read, filesystem.list, stack.health, stack.smoke_test, ai.audit, ollama.health]
+forbidden: [modify_product_code, uncontrolled_response_action, fabricate_evidence, git_commit, merge_main, approve_high_impact_response]

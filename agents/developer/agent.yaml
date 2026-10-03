@@ -1,5 +1,5 @@
 id: developer
-role: senior_developer
+role: ai_integration_developer
 model_preference: coding
 system_prompt: agents/developer/system.md
 input:
@@ -10,4 +10,4 @@ permissions:
   read: [project, contracts, tasks, validation, src, tests, docker, evidence]
   write: [src, tests, docker]
   tools: [filesystem.read, filesystem.list]
-forbidden: [execute_tests, docker, arbitrary_shell, git_commit, merge_main, production_action, fabricate_evidence]
+forbidden: [reimplement_wazuh, reimplement_suricata, reimplement_shuffle, execute_tests, arbitrary_shell, git_commit, merge_main, production_action, fabricate_evidence]

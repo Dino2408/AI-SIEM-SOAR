@@ -1,0 +1,22 @@
+version: "1.0"
+strategy: integrate_open_source_security_products
+components:
+  siem: Wazuh
+  network_detection: Suricata
+  soar: Shuffle
+  ai:
+    product: Custom AI Analysis Module
+    runtime: Ollama
+  optional_threat_intelligence: [MISP, OpenCTI]
+data_flow:
+  endpoint: "Wazuh Agent -> Wazuh"
+  network: "Suricata EVE JSON -> Wazuh"
+  analysis: "Wazuh alerts -> AI Analysis Module"
+  response: "AI policy gate -> Shuffle -> approved response"
+principles:
+  - no_custom_siem_core
+  - no_custom_soar_core
+  - deterministic_policy_controls_execution
+  - high_impact_response_requires_human_approval
+  - audit_all_ai_decisions
+  - one_active_local_model
