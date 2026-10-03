@@ -1,0 +1,1 @@
+{"type":"object","required":["status","validation_result","defects","artifacts","next_agent"],"properties":{"status":{"enum":["SUCCESS","FAILURE","BLOCKED"]},"validation_result":{"enum":["PASS","FAIL","BLOCKED"]},"validation":{"type":"object"},"defects":{"type":"array"},"recommendation":{"type":"string"},"artifacts":{"type":"array"},"next_agent":{"type":["string","null"]}}}
