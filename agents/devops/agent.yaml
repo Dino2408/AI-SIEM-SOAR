@@ -1,0 +1,9 @@
+id: devops
+role: devops_tester
+model_preference: coding_and_operations
+permissions:
+  read: [project, tasks, testing, contracts, src, tests, docker, deploy]
+  write: [testing, deploy, devops_artifacts]
+  tools: [docker, testing, datasets, siem_health, siem_query]
+  shell: restricted_allowlist_only
+forbidden: [arbitrary_shell, external_targets, uncontrolled_production_action, fabricate_evidence]
