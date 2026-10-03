@@ -34,23 +34,31 @@ def _run(args):
     p = subprocess.run(command, cwd=ROOT, env=os.environ.copy(), text=True, capture_output=True, timeout=int(args.get("timeout", 300)))
     return {"command": command, "returncode": p.returncode, "stdout": p.stdout[-12000:], "stderr": p.stderr[-12000:]}
 
+def _script(name, timeout=900):
+    allowed={"bootstrap":"scripts/bootstrap_stack.sh","stop":"scripts/stop_stack.sh","smoke":"scripts/stack_smoke_test.sh"}
+    if name not in allowed:
+        raise PermissionError("unknown stack operation")
+    p=subprocess.run([str(ROOT/allowed[name])],cwd=ROOT,env=os.environ.copy(),text=True,capture_output=True,timeout=timeout)
+    return {"operation":name,"returncode":p.returncode,"stdout":p.stdout[-20000:],"stderr":p.stderr[-20000:]}
+
 def _ollama_health(_args):
     import shutil
     return {"installed": bool(shutil.which("ollama"))}
 
-def _siem_health(_args):
+def _ai_health(_args):
     try:
         with urllib.request.urlopen("http://127.0.0.1:8080/health", timeout=5) as r:
             return {"status": r.status, "body": json.loads(r.read().decode())}
     except Exception as exc:
         return {"status": 0, "error": str(exc)}
 
-def _siem_events(args):
-    url = "http://127.0.0.1:8080/api/v1/events"
-    if args.get("limit") is not None:
-        url += "?limit=" + str(int(args["limit"]))
+def _ai_audit(args):
+    url="http://127.0.0.1:8080/v1/audit"
     with urllib.request.urlopen(url, timeout=5) as r:
-        return json.loads(r.read().decode())
+        data=json.loads(r.read().decode())
+    if args.get("limit") is not None:
+        data["records"]=data.get("records",[])[-int(args["limit"]):]
+    return data
 
 def build_default_registry():
     r = ToolRegistry()
@@ -58,7 +66,10 @@ def build_default_registry():
     r.register(ToolSpec("filesystem.read", all_agents, _read, False, "Read repository text"))
     r.register(ToolSpec("filesystem.list", all_agents, _list, False, "List repository entries"))
     r.register(ToolSpec("testing.run", ("devops", "validator"), _run, True, "Run local argv-only test command"))
-    r.register(ToolSpec("siem.health", ("devops", "validator"), _siem_health, False, "Query local SIEM health"))
-    r.register(ToolSpec("siem.events", ("devops", "validator"), _siem_events, False, "Query local SIEM events"))
+    r.register(ToolSpec("stack.bootstrap", ("devops",), lambda a: _script("bootstrap"), True, "Start the pinned integrated Docker stack"))
+    r.register(ToolSpec("stack.stop", ("devops",), lambda a: _script("stop"), True, "Stop the integrated Docker stack"))
+    r.register(ToolSpec("stack.smoke_test", ("devops", "validator"), lambda a: _script("smoke", 300), True, "Run the integrated stack smoke test"))
+    r.register(ToolSpec("stack.health", ("devops", "validator"), _ai_health, False, "Query the project AI gateway health"))
+    r.register(ToolSpec("ai.audit", ("devops", "validator"), _ai_audit, False, "Read audited AI decisions"))
     r.register(ToolSpec("ollama.health", all_agents, _ollama_health, False, "Check local Ollama executable"))
     return r
