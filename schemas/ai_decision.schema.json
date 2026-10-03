@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object",
+  "required":["status","audit_id","incident_summary","severity_assessment","evidence","attack_hypothesis","recommended_playbook","response_arguments","confidence","policy_decision","execution"],
+  "properties":{
+    "status":{"enum":["SUCCESS","BLOCKED","FAILURE"]},
+    "audit_id":{"type":"string"},
+    "incident_summary":{"type":"string"},
+    "severity_assessment":{"type":"object","required":["level","wazuh_rule_level","rationale"]},
+    "evidence":{"type":"array"},
+    "attack_hypothesis":{"type":"string"},
+    "recommended_playbook":{"enum":["none","notify_only","collect_context","isolate_host","disable_account"]},
+    "response_arguments":{"type":"object"},
+    "confidence":{"type":"number","minimum":0,"maximum":1},
+    "policy_decision":{"type":"object","required":["allowed","requires_human_approval","selected_playbook","reason"]},
+    "execution":{"type":"object","required":["attempted","result"]}
+  }
+}
