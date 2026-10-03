@@ -8,6 +8,6 @@ input:
 output_contract: .ai/contracts/agent_result.schema.json
 permissions:
   read: [project, contracts, tasks, testing, validation, src, tests, docker, evidence]
-  write: [project, tasks, contracts]
+  write: [.ai/project, .ai/tasks, .ai/contracts]
   tools: [filesystem.read, filesystem.list]
 forbidden: [write_src, execute_tests, docker, arbitrary_shell, git_commit, merge_main, fabricate_evidence]
