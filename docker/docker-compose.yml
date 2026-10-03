@@ -1,20 +1,62 @@
 services:
-  siem-api:
+  ai-analysis:
     build:
       context: ..
-      dockerfile: docker/siem-api.Dockerfile
-    container_name: ai-siem-soar-api
+      dockerfile: docker/ai-analysis.Dockerfile
+    container_name: ai-siem-soar-ai
     restart: unless-stopped
+    env_file:
+      - ../.env
     environment:
-      SIEM_DATA_DIR: /data
+      OLLAMA_BASE_URL: \${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: \${OLLAMA_MODEL:-}
+      SHUFFLE_WEBHOOK_URL: \${SHUFFLE_WEBHOOK_URL:-}
+      AI_DRY_RUN: \${AI_DRY_RUN:-false}
+      AI_AUDIT_FILE: /data/audit.jsonl
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
-      - siem-data:/data
+      - ai-audit:/data
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:\${AI_PORT:-8080}:8080"
     healthcheck:
       test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')"]
       interval: 10s
-      timeout: 3s
-      retries: 5
+      timeout: 5s
+      retries: 12
+
+  suricata:
+    build:
+      context: ..
+      dockerfile: docker/suricata/Dockerfile
+    container_name: ai-siem-soar-suricata
+    restart: unless-stopped
+    command: ["suricata","-c","/etc/suricata/suricata.yaml","-i","\${SURICATA_INTERFACE:-eth0}"]
+    cap_add: [NET_ADMIN, NET_RAW, SYS_NICE]
+    network_mode: host
+    volumes:
+      - suricata-logs:/var/log/suricata
+      - suricata-run:/var/run/suricata
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-siem-soar-ollama
+    profiles: ["local-ollama"]
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
 volumes:
-  siem-data:
+  ai-audit:
+  suricata-logs:
+  suricata-run:
+  ollama-data:
