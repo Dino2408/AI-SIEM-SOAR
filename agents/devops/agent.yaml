@@ -1,5 +1,5 @@
 id: devops
-role: devops_tester
+role: integration_devops_tester
 model_preference: coding_and_operations
 system_prompt: agents/devops/system.md
 input:
@@ -10,4 +10,4 @@ permissions:
   read: [project, contracts, tasks, testing, evidence, src, tests, docker]
   write: [.ai/testing, .ai/evidence, .ai/deploy, .ai/devops_artifacts]
   tools: [filesystem.read, filesystem.list, testing.run, siem.health, siem.events]
-forbidden: [write_src, arbitrary_shell, external_targets, uncontrolled_production_action, git_commit, merge_main, fabricate_evidence]
+forbidden: [write_product_code, arbitrary_shell, uncontrolled_production_action, git_commit, merge_main, fabricate_evidence]
