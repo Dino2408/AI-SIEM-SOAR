@@ -131,7 +131,7 @@ def analyze(payload):
         "reason":"High-impact actions are never executed autonomously; only allowlisted low-impact playbooks can be submitted automatically."
     }
     execution={"attempted":False,"result":"not_requested"}
-    if chosen in {"notify_only","collect_context"} and SHUFFLE_WEBHOOK_URL:
+    if model_result.get("status")=="SUCCESS" and chosen in {"notify_only","collect_context"} and SHUFFLE_WEBHOOK_URL:
         try:
             r=requests.post(SHUFFLE_WEBHOOK_URL,json={
                 "source":"AI-SIEM-SOAR","audit_id":audit_id,"alert":alert,
