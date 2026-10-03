@@ -1,0 +1,22 @@
+services:
+  wazuh.manager:
+    build:
+      context: ../../../
+      dockerfile: docker/wazuh-ai-integration/Dockerfile
+      args:
+        WAZUH_VERSION: \${WAZUH_VERSION:-4.14.8}
+    networks:
+      soc:
+        aliases: [wazuh-manager]
+    volumes:
+      - suricata-logs:/var/log/suricata:ro
+
+networks:
+  soc:
+    external: true
+    name: ai-siem-soar-soc
+
+volumes:
+  suricata-logs:
+    external: true
+    name: ai-siem-soar-suricata-logs
