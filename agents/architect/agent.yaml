@@ -1,8 +1,13 @@
 id: architect
 role: system_architect
 model_preference: reasoning
+system_prompt: agents/architect/system.md
+input:
+  required: [requirements, workflow_state]
+  optional: [existing_architecture, validation_feedback]
+output_contract: .ai/contracts/agent_result.schema.json
 permissions:
-  read: [project, contracts, tasks, testing, validation, src]
-  write: [project, tasks, contracts]
-  git: [status, diff, log]
-forbidden: [commit, merge_main, execute_arbitrary_shell, fabricate_evidence]
+  read: [project, contracts, tasks, testing, validation, src, tests, docker, evidence]
+  write: [.ai/project, .ai/tasks, .ai/contracts]
+  tools: [filesystem.read, filesystem.list]
+forbidden: [write_src, execute_tests, docker, arbitrary_shell, git_commit, merge_main, fabricate_evidence]

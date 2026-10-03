@@ -1,9 +1,13 @@
 id: devops
 role: devops_tester
 model_preference: coding_and_operations
+system_prompt: agents/devops/system.md
+input:
+  required: [requirements, task_plan, source_tree]
+  optional: [defects, validation_feedback]
+output_contract: .ai/contracts/agent_result.schema.json
 permissions:
-  read: [project, tasks, testing, contracts, src, tests, docker, deploy]
-  write: [testing, deploy, devops_artifacts]
-  tools: [docker, testing, datasets, siem_health, siem_query]
-  shell: restricted_allowlist_only
-forbidden: [arbitrary_shell, external_targets, uncontrolled_production_action, fabricate_evidence]
+  read: [project, contracts, tasks, testing, evidence, src, tests, docker]
+  write: [.ai/testing, .ai/evidence, .ai/deploy, .ai/devops_artifacts]
+  tools: [filesystem.read, filesystem.list, testing.run, siem.health, siem.events]
+forbidden: [write_src, arbitrary_shell, external_targets, uncontrolled_production_action, git_commit, merge_main, fabricate_evidence]

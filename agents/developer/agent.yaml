@@ -1,8 +1,13 @@
 id: developer
 role: senior_developer
 model_preference: coding
+system_prompt: agents/developer/system.md
+input:
+  required: [requirements, architecture, task_plan]
+  optional: [defects, validation_feedback]
+output_contract: .ai/contracts/agent_result.schema.json
 permissions:
-  read: [project, contracts, tasks, validation, src, tests, docker]
+  read: [project, contracts, tasks, validation, src, tests, docker, evidence]
   write: [src, tests, docker]
-  git: [status, diff, branch, add, commit]
-forbidden: [merge_main, production_action, fabricate_evidence]
+  tools: [filesystem.read, filesystem.list]
+forbidden: [execute_tests, docker, arbitrary_shell, git_commit, merge_main, production_action, fabricate_evidence]
