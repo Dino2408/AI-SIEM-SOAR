@@ -112,16 +112,23 @@ def analyze(payload):
         rationale=str(llm.get("rationale",""))
         if llm_playbook not in ALLOWED_PLAYBOOKS:
             llm_playbook="none"
+    requested_playbook=llm_playbook or policy_playbook
     chosen=policy_playbook
+    requires_approval=False
+    allowed=True
     if llm_playbook in {"notify_only","collect_context"} and policy_playbook!="none":
         chosen=llm_playbook
     if llm_playbook in HIGH_IMPACT:
-        rationale += " LLM requested a high-impact action; policy gate rejected autonomous execution."
+        chosen=llm_playbook
+        requires_approval=True
+        allowed=False
+        rationale += " LLM requested a high-impact action; policy gate recorded it but blocked autonomous execution pending human approval."
     policy={
-        "allowed": chosen not in HIGH_IMPACT,
-        "requires_human_approval": chosen in HIGH_IMPACT,
+        "allowed": allowed,
+        "requires_human_approval": requires_approval,
+        "requested_playbook": requested_playbook,
         "selected_playbook": chosen,
-        "reason":"High-impact actions are never executed autonomously; selected playbooks are allowlisted."
+        "reason":"High-impact actions are never executed autonomously; only allowlisted low-impact playbooks can be submitted automatically."
     }
     execution={"attempted":False,"result":"not_requested"}
     if chosen in {"notify_only","collect_context"} and SHUFFLE_WEBHOOK_URL:
