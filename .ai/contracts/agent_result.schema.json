@@ -5,6 +5,8 @@
   "properties": {
     "status": {"enum": ["SUCCESS", "FAILURE", "BLOCKED"]},
     "summary": {"type": "string"},
+    "validation_result": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+    "defect_category": {"enum": ["ARCHITECTURE", "REQUIREMENT", "CODE", "DEVOPS", "TEST", "UNKNOWN"]},
     "artifacts": {"type": "array", "items": {
       "type": "object",
       "required": ["path", "operation", "content"],
