@@ -14,6 +14,10 @@ fi
 sudo sysctl -w vm.max_map_count=262144 >/dev/null || true
 chmod +x scripts/*.sh docker/wazuh-ai-integration/*.sh docker/wazuh-ai-integration/custom-ai
 cp -n .env.example .env 2>/dev/null || true
+DEFAULT_IFACE="$(ip route show default 2>/dev/null | awk 'NR==1{print $5}')"
+if [ -n "$DEFAULT_IFACE" ] && ! ip link show "$(grep '^SURICATA_INTERFACE=' .env | cut -d= -f2-)" >/dev/null 2>&1; then
+  sed -i "s/^SURICATA_INTERFACE=.*/SURICATA_INTERFACE=$DEFAULT_IFACE/" .env
+fi
 docker compose -f docker/docker-compose.yml build
 docker compose -f docker/docker-compose.yml up -d ai-analysis
 cd vendor/wazuh-docker/single-node
