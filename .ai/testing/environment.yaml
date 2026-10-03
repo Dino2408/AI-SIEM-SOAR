@@ -1,0 +1,8 @@
+name: isolated-lab
+allowed_targets:
+  - siem-test-network
+internet_attack: false
+external_targets: false
+allowed_networks:
+  - siem-test-network
+human_approval_required_for_production_actions: true
