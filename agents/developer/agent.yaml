@@ -1,0 +1,8 @@
+id: developer
+role: senior_developer
+model_preference: coding
+permissions:
+  read: [project, contracts, tasks, validation, src, tests, docker]
+  write: [src, tests, docker]
+  git: [status, diff, branch, add, commit]
+forbidden: [merge_main, production_action, fabricate_evidence]
