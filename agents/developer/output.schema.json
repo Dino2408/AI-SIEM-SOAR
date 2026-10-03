@@ -1,0 +1,1 @@
+{"type":"object","required":["status","task_id","changed_files","tests","artifacts","next_agent"],"properties":{"status":{"enum":["SUCCESS","FAILURE","BLOCKED"]},"task_id":{"type":"string"},"changed_files":{"type":"array"},"tests":{"type":"array"},"artifacts":{"type":"array"},"commit":{"type":["string","null"]},"next_agent":{"type":["string","null"]}}}
