@@ -12,8 +12,8 @@ from orchestrator.state_machine import (
 )
 
 
-def build_context() -> WorkflowContext:
-    return WorkflowContext(workflow_id="WF-TEST")
+def build_context(state: WorkflowState = WorkflowState.INIT) -> WorkflowContext:
+    return WorkflowContext(workflow_id="WF-TEST", state=state)
 
 
 def test_main_path_transitions() -> None:
@@ -31,8 +31,11 @@ def test_main_path_transitions() -> None:
     ):
         sm.transition(ctx, target)
 
-    sm.transition(ctx, WorkflowState.FINAL_ACCEPTANCE,
-                 validation_result=ValidationResult.PASS)
+    sm.transition(
+        ctx,
+        WorkflowState.FINAL_ACCEPTANCE,
+        validation_result=ValidationResult.PASS,
+    )
     ctx.human_approved = True
     sm.transition(ctx, WorkflowState.PRODUCT_COMPLETE)
 
@@ -49,7 +52,7 @@ def test_illegal_transition_is_rejected() -> None:
 
 def test_validation_fail_routes_to_defect() -> None:
     sm = StateMachine()
-    ctx = build_context(state=WorkflowState.VALIDATION)
+    ctx = build_context(WorkflowState.VALIDATION)
 
     router = WorkflowRouter(sm)
     assert router.route_validation(ctx, "FAIL") == WorkflowState.CREATE_DEFECT
@@ -57,7 +60,7 @@ def test_validation_fail_routes_to_defect() -> None:
 
 def test_validation_blocked_routes_to_blocked() -> None:
     sm = StateMachine()
-    ctx = build_context(state=WorkflowState.VALIDATION)
+    ctx = build_context(WorkflowState.VALIDATION)
 
     router = WorkflowRouter(sm)
     assert router.route_validation(ctx, "BLOCKED") == WorkflowState.BLOCKED
@@ -76,7 +79,7 @@ def test_defect_routing() -> None:
 
 def test_fix_iteration_limit() -> None:
     sm = StateMachine(max_fix_iterations=1)
-    ctx = build_context(state=WorkflowState.ROUTE_DEFECT)
+    ctx = build_context(WorkflowState.ROUTE_DEFECT)
 
     sm.transition(ctx, WorkflowState.DEVELOPMENT)
     assert ctx.fix_iteration == 1
@@ -89,7 +92,7 @@ def test_fix_iteration_limit() -> None:
 
 def test_product_complete_requires_human_acceptance() -> None:
     sm = StateMachine()
-    ctx = build_context(state=WorkflowState.FINAL_ACCEPTANCE)
+    ctx = build_context(WorkflowState.FINAL_ACCEPTANCE)
 
     with pytest.raises(TransitionError):
         sm.transition(ctx, WorkflowState.PRODUCT_COMPLETE)
