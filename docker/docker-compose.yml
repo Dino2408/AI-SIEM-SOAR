@@ -1,3 +1,4 @@
+name: ai-siem-soar
 services:
   ai-analysis:
     build:
@@ -15,6 +16,7 @@ services:
       AI_AUDIT_FILE: /data/audit.jsonl
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks: [soc]
     volumes:
       - ai-audit:/data
     ports:
@@ -43,6 +45,7 @@ services:
     container_name: ai-siem-soar-ollama
     profiles: ["local-ollama"]
     restart: unless-stopped
+    networks: [soc]
     ports:
       - "127.0.0.1:11434:11434"
     volumes:
@@ -55,8 +58,13 @@ services:
               count: 1
               capabilities: [gpu]
 
+networks:
+  soc:
+    name: ai-siem-soar-soc
+
 volumes:
   ai-audit:
   suricata-logs:
+    name: ai-siem-soar-suricata-logs
   suricata-run:
   ollama-data:
