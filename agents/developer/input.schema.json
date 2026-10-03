@@ -1,0 +1,1 @@
+{"type":"object","required":["task_id","objective"],"properties":{"task_id":{"type":"string"},"objective":{"type":"string"},"input_artifacts":{"type":"array"},"requirements":{"type":"array"},"interfaces":{"type":"array"},"acceptance_criteria":{"type":"array"},"feedback":{"type":"array"}}}
