@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Normalized Security Event",
+  "type":"object",
+  "required":["event_id","timestamp","source","event_type","severity"],
+  "properties":{
+    "event_id":{"type":"string"},"timestamp":{"type":"string"},"source":{"type":"string"},
+    "event_type":{"type":"string"},"severity":{"enum":["low","medium","high","critical"]},
+    "raw":{"type":"object"},"evidence":{"type":"array","items":{"type":"object"}}
+  }
+}
