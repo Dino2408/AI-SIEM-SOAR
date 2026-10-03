@@ -1,0 +1,11 @@
+limits:
+  max_fix_iterations: 3
+  max_format_retries: 2
+  max_tool_failures: 3
+  max_agent_turns: 20
+execution:
+  sequential_agents: true
+  max_active_models: 1
+state_file: .ai/state/workflow.json
+messages_dir: .ai/messages
+audit_dir: .ai/audit
