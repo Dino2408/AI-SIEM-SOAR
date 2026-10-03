@@ -1,0 +1,9 @@
+task_id: TASK-001
+status: active
+owner: architect
+objective: Define initial architecture and development plan.
+acceptance_criteria:
+  - architecture.md exists
+  - development_plan.md exists
+  - technology_stack.md is consistent
+  - implementation tasks are explicit
