@@ -1,0 +1,1 @@
+{"type":"object","required":["status","task_id","artifacts","tasks_created","next_agent"],"properties":{"status":{"enum":["SUCCESS","FAILURE","BLOCKED"]},"task_id":{"type":"string"},"artifacts":{"type":"array"},"tasks_created":{"type":"array"},"decisions":{"type":"array"},"risks":{"type":"array"},"next_agent":{"type":["string","null"]}}}
