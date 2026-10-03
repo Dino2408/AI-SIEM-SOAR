@@ -1,0 +1,1 @@
+{"type":"object","required":["requirements","expected_results","actual_results","deterministic_checks","evidence"],"properties":{"requirements":{"type":"array"},"expected_results":{"type":"array"},"actual_results":{"type":"array"},"deterministic_checks":{"type":"array"},"evidence":{"type":"array"},"test_report":{"type":["object","null"]}}}
