@@ -38,7 +38,7 @@ def _script(name, timeout=900):
     allowed={"bootstrap":"scripts/bootstrap_stack.sh","stop":"scripts/stop_stack.sh","smoke":"scripts/stack_smoke_test.sh"}
     if name not in allowed:
         raise PermissionError("unknown stack operation")
-    p=subprocess.run([str(ROOT/allowed[name])],cwd=ROOT,env=os.environ.copy(),text=True,capture_output=True,timeout=timeout)
+    p=subprocess.run(["bash",str(ROOT/allowed[name])],cwd=ROOT,env=os.environ.copy(),text=True,capture_output=True,timeout=timeout)
     return {"operation":name,"returncode":p.returncode,"stdout":p.stdout[-20000:],"stderr":p.stderr[-20000:]}
 
 def _ollama_health(_args):
