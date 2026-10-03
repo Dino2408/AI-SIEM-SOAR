@@ -1,0 +1,8 @@
+id: architect
+role: system_architect
+model_preference: reasoning
+permissions:
+  read: [project, contracts, tasks, testing, validation, src]
+  write: [project, tasks, contracts]
+  git: [status, diff, log]
+forbidden: [commit, merge_main, execute_arbitrary_shell, fabricate_evidence]
