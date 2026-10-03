@@ -1,0 +1,13 @@
+models:
+  reasoning:
+    provider: ollama
+    model_id: null
+  coding:
+    provider: ollama
+    model_id: null
+  coding_and_operations:
+    provider: ollama
+    model_id: null
+policy:
+  sequential_only: true
+  max_active_models: 1
