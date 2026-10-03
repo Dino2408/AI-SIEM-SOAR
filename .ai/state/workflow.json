@@ -1,0 +1,4 @@
+{
+  "workflow_id":"WF-001","state":"INIT","iteration":0,
+  "max_fix_iterations":3,"max_format_retries":2,"max_tool_failures":3,"max_agent_turns":20
+}
