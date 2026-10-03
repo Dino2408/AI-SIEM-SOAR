@@ -1,0 +1,9 @@
+scenario_id: SCN-001
+name: SSH brute-force
+attack_category: credential-access
+mitre_attack: T1110
+input: labeled_failed_login_sequence
+expected:
+  alert: true
+  severity: high
+  evidence_required: true
