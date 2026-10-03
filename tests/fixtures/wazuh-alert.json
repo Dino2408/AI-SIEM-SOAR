@@ -1,0 +1,15 @@
+{
+  "alert": {
+    "id": "lab-001",
+    "timestamp": "2026-10-03T00:00:00Z",
+    "rule": {
+      "id": "5710",
+      "level": 10,
+      "description": "Multiple authentication failures",
+      "groups": ["authentication_failures"]
+    },
+    "agent": {"id": "001", "name": "lab-host"},
+    "location": "sshd"
+  },
+  "related_context": []
+}
