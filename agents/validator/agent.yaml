@@ -1,0 +1,8 @@
+id: validator
+role: soc_manager_validator
+model_preference: reasoning
+permissions:
+  read: [project, contracts, testing, evidence, reports, artifacts, src, tests]
+  write: [validation]
+  tools: [testing, evidence, siem_health, siem_query, deterministic_validator]
+forbidden: [modify_product_code, fabricate_evidence, approve_production_safety_action]
